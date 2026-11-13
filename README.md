@@ -55,11 +55,19 @@ ERROR .claude/settings.json hooks.PreToolUse[0]: script not found: .claude/hooks
 ```
 Full checklist: [Claude Code hook not working?](https://issea1015.github.io/agent-workflow-kit/guides/claude-code-hook-not-working.html?utm_source=guard-readme)
 
+## Too many "don't ask again"s? `permission_check.py`
+Free and read-only. Flags permission rules that let the agent run anything (`Bash`, `Bash(*)`), pre-approve risky commands
+(`rm`, `sudo`, `curl`, `git push`, ...), `bypassPermissions` mode, and a missing deny rule for `.env`.
+```bash
+python3 permission_check.py      # checks ~/.claude/settings.json and .claude/settings*.json
+```
+Guide: [a safe allow list for Claude Code](https://issea1015.github.io/agent-workflow-kit/guides/claude-code-permissions-allow-list.html?utm_source=guard-readme)
+
 ## Safety audit
 - Reads stdin only. It makes **no network calls, writes no files, and launches no subprocesses**.
 - Standard library only (Python 3.8+). On malformed input it lets the command through, so it can't lock up a session.
 - It is a safety net, not a sandbox.
-- `hook_doctor.py` only reads settings files and checks whether scripts exist; it never runs a hook.
+- `hook_doctor.py` and `permission_check.py` only read settings files and check whether scripts exist; they never run a hook or a command.
 
 ## Want more?
 This hook is one of 15 items in the **Agent Workflow Kit**: 3 safety hooks (including one that keeps `.env` and keys out
