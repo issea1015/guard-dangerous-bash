@@ -63,11 +63,26 @@ python3 permission_check.py      # checks ~/.claude/settings.json and .claude/se
 ```
 Guide: [a safe allow list for Claude Code](https://issea1015.github.io/agent-workflow-kit/guides/claude-code-permissions-allow-list.html?utm_source=guard-readme)
 
+## CLAUDE.md too long, or leaking a key? `claude_md_check.py`
+Free and read-only. Checks the CLAUDE.md memory files Claude Code loads into every session, and the files they `@import`:
+pasted secrets (API keys, tokens, passwords; printed redacted), imports that point at missing files, import cycles, files over
+200 lines or ~5,000 tokens, and "always X" / "never X" lines that contradict each other.
+```bash
+python3 claude_md_check.py       # checks CLAUDE.md, .claude/CLAUDE.md, CLAUDE.local.md here and in parents, plus ~/.claude/CLAUDE.md
+```
+```
+HIGH  CLAUDE.md:7: possible AWS access key id (AKIAIO...(20 chars)); remove it and rotate the key
+ERROR CLAUDE.md:5: @docs/api.md imports a file that does not exist (docs/api.md)
+WARN  CLAUDE.md:2, CLAUDE.local.md:2: contradicting instructions: 'always use pnpm' and 'never use pnpm'
+```
+Guide: [check your CLAUDE.md](https://issea1015.github.io/agent-workflow-kit/guides/check-claude-md-file.html?utm_source=guard-readme)
+
 ## Safety audit
 - Reads stdin only. It makes **no network calls, writes no files, and launches no subprocesses**.
 - Standard library only (Python 3.8+). On malformed input it lets the command through, so it can't lock up a session.
 - It is a safety net, not a sandbox.
 - `hook_doctor.py` and `permission_check.py` only read settings files and check whether scripts exist; they never run a hook or a command.
+- `claude_md_check.py` only reads CLAUDE.md files and the files they import.
 
 ## Want more?
 This hook is one of 15 items in the **Agent Workflow Kit**: 3 safety hooks (including one that keeps `.env` and keys out
