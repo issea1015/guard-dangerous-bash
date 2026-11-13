@@ -43,6 +43,6 @@ python3 -m unittest discover -s tests
 This hook is one of 15 items in the **Agent Workflow Kit**: 3 safety hooks (including one that keeps `.env` and keys out
 of the agent's context), 9 workflow skills, 3 CLAUDE.md templates, and `audit.py`, which checks every hook already
 configured on your machine for download-and-run, secret access and network calls.
-→ **<KIT_URL>** ($29 launch price)
+→ **https://issea1015.github.io/agent-workflow-kit/** ($29 launch price)
 
 MIT licensed (this hook only).
