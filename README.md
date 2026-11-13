@@ -10,7 +10,14 @@ A free, single-file **PreToolUse** hook. Before Claude Code runs a shell command
 
 Claude sees why the command was blocked and changes its approach. Everything else passes through.
 
-## Install (1 minute)
+## Install as a plugin (one line)
+In Claude Code:
+```
+/plugin install guard-dangerous-bash --marketplace issea1015/guard-dangerous-bash
+```
+On older versions: `/plugin marketplace add issea1015/guard-dangerous-bash`, then `/plugin install guard-dangerous-bash@guard-dangerous-bash`.
+
+## Or install by hand (1 minute)
 ```bash
 mkdir -p ~/.claude/hooks
 curl -o ~/.claude/hooks/guard-dangerous-bash.py \

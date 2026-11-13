@@ -1,0 +1,16 @@
+{
+  "name": "guard-dangerous-bash",
+  "owner": {
+    "name": "Agent Workflow Kit"
+  },
+  "metadata": {
+    "description": "Free safety hook for Claude Code from the Agent Workflow Kit."
+  },
+  "plugins": [
+    {
+      "name": "guard-dangerous-bash",
+      "source": "./",
+      "description": "Blocks rm -rf ~, force pushes to main, curl | sh and other catastrophic commands before Claude Code runs them."
+    }
+  ]
+}
