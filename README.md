@@ -1,0 +1,48 @@
+# guard-dangerous-bash: a Claude Code hook that blocks catastrophic commands
+
+A free, single-file **PreToolUse** hook. Before Claude Code runs a shell command, the hook blocks:
+
+- `rm -rf /`, `rm -rf ~`, `rm -rf $HOME`
+- force pushes to `main` / `master`
+- `mkfs`, `dd of=/dev/sdX`, redirects onto disk devices
+- `curl … | sh` (piping a remote script into a shell)
+- fork bombs, `chmod -R 777 /`
+
+Claude sees why the command was blocked and changes its approach. Everything else passes through.
+
+## Install (1 minute)
+```bash
+mkdir -p ~/.claude/hooks
+curl -o ~/.claude/hooks/guard-dangerous-bash.py \
+  https://raw.githubusercontent.com/issea1015/guard-dangerous-bash/main/guard.py   # or copy guard.py by hand
+```
+Read the file before you install it; it's about 50 lines of standard-library Python.
+Then add this to `~/.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "python3 ~/.claude/hooks/guard-dangerous-bash.py" }] }
+    ]
+  }
+}
+```
+
+## Test it
+```bash
+python3 -m unittest discover -s tests
+```
+
+## Safety audit
+- Reads stdin only. It makes **no network calls, writes no files, and launches no subprocesses**.
+- Standard library only (Python 3.8+). On malformed input it lets the command through, so it can't lock up a session.
+- It is a safety net, not a sandbox.
+
+## Want more?
+This hook is one of 15 items in the **Agent Workflow Kit**: 3 safety hooks (including one that keeps `.env` and keys out
+of the agent's context), 9 workflow skills, 3 CLAUDE.md templates, and `audit.py`, which checks every hook already
+configured on your machine for download-and-run, secret access and network calls.
+→ **<KIT_URL>** ($29 launch price)
+
+MIT licensed (this hook only).
