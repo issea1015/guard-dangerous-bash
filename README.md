@@ -41,10 +41,25 @@ Then add this to `~/.claude/settings.json`:
 python3 -m unittest discover -s tests
 ```
 
+## Hook not firing? `hook_doctor.py`
+A second free, read-only script in this repo. It checks the settings files Claude Code reads for the mistakes that make a hook
+silently do nothing: invalid JSON, misspelled event names, lowercase matchers (`bash` never matches `Bash`), missing or
+non-executable scripts, and relative paths that break when the working directory changes.
+```bash
+python3 hook_doctor.py                          # checks ~/.claude/settings.json and .claude/settings*.json
+python3 hook_doctor.py path/to/settings.json    # or a specific file
+```
+```
+ERROR .claude/settings.json hooks.PreToolUse[0]: matcher 'bash' never matches: tool names are case-sensitive, use 'Bash'
+ERROR .claude/settings.json hooks.PreToolUse[0]: script not found: .claude/hooks/guard.py
+```
+Full checklist: [Claude Code hook not working?](https://issea1015.github.io/agent-workflow-kit/guides/claude-code-hook-not-working.html?utm_source=guard-readme)
+
 ## Safety audit
 - Reads stdin only. It makes **no network calls, writes no files, and launches no subprocesses**.
 - Standard library only (Python 3.8+). On malformed input it lets the command through, so it can't lock up a session.
 - It is a safety net, not a sandbox.
+- `hook_doctor.py` only reads settings files and checks whether scripts exist; it never runs a hook.
 
 ## Want more?
 This hook is one of 15 items in the **Agent Workflow Kit**: 3 safety hooks (including one that keeps `.env` and keys out
