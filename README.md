@@ -84,6 +84,16 @@ Guide: [check your CLAUDE.md](https://issea1015.github.io/agent-workflow-kit/gui
 - `hook_doctor.py` and `permission_check.py` only read settings files and check whether scripts exist; they never run a hook or a command.
 - `claude_md_check.py` only reads CLAUDE.md files and the files they import.
 
+## Skills (Claude Code plugin)
+
+Installing this repo as a plugin (see above) also adds three read-only skills that run the checkers above for you:
+
+| Skill | Ask Claude | Runs |
+|---|---|---|
+| `hook-doctor` | "why isn't my hook firing?" | `hook_doctor.py` |
+| `permission-check` | "are my Claude Code permissions safe?" | `permission_check.py` |
+| `claude-md-check` | "review my CLAUDE.md" | `claude_md_check.py` |
+
 ## Audit many repos at once (no install)
 The same checks run in the cloud as an Apify actor: paste GitHub repo URLs (your org, or skill/plugin repos you are about
 to install) and get one row per repo with every finding and its severity, as JSON/CSV. $0.05 per audited repo; failed

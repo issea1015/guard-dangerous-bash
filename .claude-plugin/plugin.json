@@ -1,10 +1,10 @@
 {
   "name": "guard-dangerous-bash",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "PreToolUse hook that blocks catastrophic shell commands (rm -rf ~, force push to main, curl | sh, mkfs, dd to disks) before Claude Code runs them.",
   "author": {"name": "Agent Workflow Kit"},
   "homepage": "https://issea1015.github.io/agent-workflow-kit/guides/block-dangerous-commands-claude-code.html",
   "repository": "https://github.com/issea1015/guard-dangerous-bash",
   "license": "MIT",
-  "keywords": ["safety", "hooks", "bash", "guardrails"]
+  "keywords": ["safety", "hooks", "bash", "guardrails", "skills", "permissions", "claude-md"]
 }
