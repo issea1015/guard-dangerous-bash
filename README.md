@@ -84,6 +84,11 @@ Guide: [check your CLAUDE.md](https://issea1015.github.io/agent-workflow-kit/gui
 - `hook_doctor.py` and `permission_check.py` only read settings files and check whether scripts exist; they never run a hook or a command.
 - `claude_md_check.py` only reads CLAUDE.md files and the files they import.
 
+## Audit many repos at once (no install)
+The same checks run in the cloud as an Apify actor: paste GitHub repo URLs (your org, or skill/plugin repos you are about
+to install) and get one row per repo with every finding and its severity, as JSON/CSV. $0.05 per audited repo; failed
+repos are not charged: [Claude Code Hooks & Skills Security Audit on Apify](https://apify.com/issea1015/agent-config-audit).
+
 ## Want more?
 This hook is one of 15 items in the **Agent Workflow Kit**: 3 safety hooks (including one that keeps `.env` and keys out
 of the agent's context), 9 workflow skills, 3 CLAUDE.md templates, and `audit.py`, which checks every hook already
