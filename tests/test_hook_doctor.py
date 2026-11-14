@@ -61,6 +61,20 @@ class HookDoctorTest(unittest.TestCase):
                 {"type": "command", "command": 'python3 "$CLAUDE_PROJECT_DIR"/.claude/hooks/guard.py'}]}]})
             self.assertEqual(hook_doctor.check_file(p), [])
 
+    def test_anchored_path_with_relative_settings_path(self):
+        with tempfile.TemporaryDirectory() as t:
+            d = Path(t) / ".claude" / "hooks"
+            d.mkdir(parents=True)
+            (d / "guard.py").write_text("")
+            settings(t, {"PreToolUse": [{"matcher": "Bash", "hooks": [
+                {"type": "command", "command": 'python3 "$CLAUDE_PROJECT_DIR"/.claude/hooks/guard.py'}]}]})
+            old = os.getcwd()
+            os.chdir(t)
+            try:
+                self.assertEqual(hook_doctor.check_file(Path(".claude/settings.json")), [])
+            finally:
+                os.chdir(old)
+
 
 if __name__ == "__main__":
     unittest.main()

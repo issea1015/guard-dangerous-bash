@@ -58,12 +58,14 @@ def script_refs(command):
 
 
 def check_command(where, command, settings_file, out):
+    settings_file = Path(settings_file).resolve()
     project = settings_file.parent.parent if settings_file.parent.name == ".claude" else Path.cwd()
     for ref, direct in script_refs(command):
         expanded = ref.replace("$CLAUDE_PROJECT_DIR", str(project)).replace("${CLAUDE_PROJECT_DIR}", str(project))
         expanded = os.path.expanduser(os.path.expandvars(expanded))
         path = Path(expanded)
-        if not path.is_absolute():
+        anchored = "CLAUDE_PROJECT_DIR" in ref or "CLAUDE_PLUGIN_ROOT" in ref
+        if not path.is_absolute() and not anchored:
             out.append(("WARN", where, f"{ref} is relative to the working directory; use \"$CLAUDE_PROJECT_DIR\"/{ref[2:] if ref.startswith('./') else ref}"))
             path = project / path
         if "${CLAUDE_PLUGIN_ROOT}" in ref or "$CLAUDE_PLUGIN_ROOT" in ref:
